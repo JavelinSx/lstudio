@@ -60,12 +60,14 @@ onMounted(() => {
   })
 
   // Создаем эффект параллакса для фоновых элементов
-  gsap.utils.toArray('.parallax-bg').forEach((element: Element) => {
-    gsap.to(element, {
+  gsap.utils.toArray('.parallax-bg').forEach((element) => {
+    // Используем приведение типа внутри функции
+    const el = element as Element;
+    gsap.to(el, {
       y: '20%',
       ease: 'none',
       scrollTrigger: {
-        trigger: element.parentElement,
+        trigger: el.parentElement,
         start: 'top bottom',
         end: 'bottom top',
         scrub: true
