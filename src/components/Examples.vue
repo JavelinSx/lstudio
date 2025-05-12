@@ -1,21 +1,110 @@
 <template>
-  <section
-    class="flex flex-col items-center w-full py-[30px] px-2.5 box-border md:-mb-[14px] lg:pt-[30px] lg:pb-[70px] lg:px-2.5 lg:-mb-[110px]"
-    id="examples">
-    <h2 class="pb-2.5">Примеры работ</h2>
-    <Accordeon title-text="Стрижки" :img-slides="hairCuts" :img-click="handleOpenPopup" />
-    <Accordeon title-text="Окрашивание блонд" :img-slides="blondColorings" :img-click="handleOpenPopup" />
-    <Accordeon title-text="Двойное/скрытое окрашивание" :img-slides="doubleColorings" :img-click="handleOpenPopup" />
-    <Accordeon title-text="Причёски/укладки" :img-slides="hairStyles" :img-click="handleOpenPopup" />
-    <Accordeon title-text="Мелирование" :img-slides="melir" :img-click="handleOpenPopup" />
-    <Accordeon title-text="Тонирование" :img-slides="tonir" :img-click="handleOpenPopup" />
-    <Accordeon title-text="Окрашивание один тон" :img-slides="ton" :img-click="handleOpenPopup" />
+  <section id="examples" class="bg-white py-16 md:py-20 lg:py-24 relative">
+    <!-- Декоративный элемент -->
+    <div class="absolute -left-16 top-20 w-64 h-64 rounded-full bg-primary opacity-5 parallax-bg"></div>
+
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="section-title" data-aos="fade-up">Примеры работ</h2>
+        <p class="max-w-2xl mx-auto text-muted" data-aos="fade-up" data-aos-delay="100">
+          Ознакомьтесь с моими работами, чтобы убедиться в профессионализме и качестве услуг
+        </p>
+      </div>
+
+      <!-- Фильтр категорий -->
+      <div class="flex flex-wrap justify-center gap-4 mb-10" data-aos="fade-up" data-aos-delay="200">
+        <button v-for="category in categories" :key="category.id" @click="setActiveCategory(category.id)" :class="[
+          'px-4 py-2 rounded-full transition-all duration-300',
+          activeCategory === category.id
+            ? 'bg-primary text-white shadow-button'
+            : 'bg-gray-100 text-dark hover:bg-gray-200'
+        ]">
+          {{ category.name }}
+        </button>
+      </div>
+
+      <!-- Галерея работ -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div v-for="(tab, index) in filteredTabs" :key="index" class="group" data-aos="fade-up"
+          :data-aos-delay="150 + (index * 50)">
+          <div class="card overflow-hidden cursor-pointer" @click="openGallery(tab.images, 0)">
+            <div class="relative overflow-hidden">
+              <img :src="tab.images[0]" :alt="tab.title"
+                class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110">
+              <div
+                class="absolute inset-0 bg-primary bg-opacity-0 flex items-center justify-center transition-all duration-300 group-hover:bg-opacity-30">
+                <div
+                  class="opacity-0 transform translate-y-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+                  <div class="bg-white p-2 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                      class="bi bi-search text-primary" viewBox="0 0 16 16">
+                      <path
+                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <h3 class="text-lg font-medium">{{ tab.title }}</h3>
+              <p class="text-muted mt-1 text-sm">{{ tab.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Лайтбокс для просмотра изображений -->
+    <div v-if="isGalleryOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90"
+      @click="closeGallery">
+      <div class="relative w-full max-w-4xl" @click.stop>
+        <button
+          class="absolute top-4 right-4 z-50 bg-white rounded-full p-2 text-dark hover:text-primary transition-colors duration-300"
+          @click="closeGallery">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x-lg"
+            viewBox="0 0 16 16">
+            <path
+              d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+          </svg>
+        </button>
+
+        <div class="overflow-hidden rounded-lg">
+          <img :src="currentImages[currentImageIndex]" alt="Просмотр работы" class="max-h-[80vh] w-auto mx-auto">
+        </div>
+
+        <!-- Навигационные кнопки -->
+        <button
+          class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white rounded-full p-2 text-dark hover:text-primary transition-colors duration-300"
+          @click.stop="prevImage">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chevron-left"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
+          </svg>
+        </button>
+
+        <button
+          class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white rounded-full p-2 text-dark hover:text-primary transition-colors duration-300"
+          @click.stop="nextImage">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chevron-right"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+          </svg>
+        </button>
+
+        <!-- Индикатор фото -->
+        <div
+          class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-80 px-4 py-1 rounded-full">
+          {{ currentImageIndex + 1 }} / {{ currentImages.length }}
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import Accordeon from './Accordeon.vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 // Импорт изображений
 import hairCut1 from '@/assets/images/haircut1.webp'
@@ -49,16 +138,148 @@ import tonir3 from '@/assets/images/tonir3.jpg'
 import tonir4 from '@/assets/images/tonir4.jpg'
 import tonir5 from '@/assets/images/tonir5.jpg'
 
-// Состояние для слайдов
-const hairCuts = ref([hairCut1, hairCut2, hairCut3])
-const blondColorings = ref([blondColoring1, blondColoring2, blondColoring3, blondColoring4, blondColoring5])
-const doubleColorings = ref([doubleColoring1, doubleColoring2, doubleColoring3])
-const hairStyles = ref([hairstyle1, hairstyle2, hairstyle3])
-const melir = ref([melir1, melir2, melir3, melir4, melir5, melir6])
-const ton = ref([ton1, ton2, ton3, ton4, ton5])
-const tonir = ref([tonir1, tonir2, tonir3, tonir4, tonir5])
+// Категории работ
+const categories = [
+  { id: 'all', name: 'Все работы' },
+  { id: 'haircuts', name: 'Стрижки' },
+  { id: 'coloring', name: 'Окрашивание' },
+  { id: 'styling', name: 'Укладки' }
+]
 
-const handleOpenPopup = () => {
-  // Обработчик для открытия popup (можно добавить функционал позже)
+// Активная категория
+const activeCategory = ref('all')
+
+// Вкладки с работами
+const tabs = [
+  {
+    id: 'haircuts',
+    title: 'Стрижки',
+    description: 'Современные стрижки для любого типа волос',
+    images: [hairCut1, hairCut2, hairCut3],
+    category: 'haircuts'
+  },
+  {
+    id: 'blond',
+    title: 'Окрашивание блонд',
+    description: 'Различные техники для идеального блонда',
+    images: [blondColoring1, blondColoring2, blondColoring3, blondColoring4, blondColoring5],
+    category: 'coloring'
+  },
+  {
+    id: 'double',
+    title: 'Двойное окрашивание',
+    description: 'Креативные решения для смелых клиентов',
+    images: [doubleColoring1, doubleColoring2, doubleColoring3],
+    category: 'coloring'
+  },
+  {
+    id: 'hairstyles',
+    title: 'Причёски и укладки',
+    description: 'Элегантные укладки для особых случаев',
+    images: [hairstyle1, hairstyle2, hairstyle3],
+    category: 'styling'
+  },
+  {
+    id: 'melir',
+    title: 'Мелирование',
+    description: 'Придание объема и игры цвета',
+    images: [melir1, melir2, melir3, melir4, melir5, melir6],
+    category: 'coloring'
+  },
+  {
+    id: 'toning',
+    title: 'Тонирование',
+    description: 'Мягкие натуральные оттенки',
+    images: [tonir1, tonir2, tonir3, tonir4, tonir5],
+    category: 'coloring'
+  },
+  {
+    id: 'single',
+    title: 'Окрашивание в один тон',
+    description: 'Глубокий насыщенный цвет',
+    images: [ton1, ton2, ton3, ton4, ton5],
+    category: 'coloring'
+  }
+]
+
+// Фильтрация вкладок по категории
+const filteredTabs = computed(() => {
+  if (activeCategory.value === 'all') {
+    return tabs
+  }
+  return tabs.filter(tab => tab.category === activeCategory.value)
+})
+
+// Установка активной категории
+const setActiveCategory = (categoryId: string) => {
+  activeCategory.value = categoryId
 }
+
+// Состояние галереи
+const isGalleryOpen = ref(false)
+const currentImages = ref<string[]>([])
+const currentImageIndex = ref(0)
+
+// Открытие галереи
+const openGallery = (images: string[], index: number) => {
+  currentImages.value = images
+  currentImageIndex.value = index
+  isGalleryOpen.value = true
+
+  // Блокируем прокрутку страницы
+  document.body.style.overflow = 'hidden'
+}
+
+// Закрытие галереи
+const closeGallery = () => {
+  isGalleryOpen.value = false
+
+  // Разблокируем прокрутку страницы
+  document.body.style.overflow = ''
+}
+
+// Переход к предыдущему изображению
+const prevImage = () => {
+  currentImageIndex.value = (currentImageIndex.value - 1 + currentImages.value.length) % currentImages.value.length
+}
+
+// Переход к следующему изображению
+const nextImage = () => {
+  currentImageIndex.value = (currentImageIndex.value + 1) % currentImages.value.length
+}
+
+// Обработка клавиш для навигации
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (!isGalleryOpen.value) return
+
+  if (event.key === 'ArrowLeft') {
+    prevImage()
+  } else if (event.key === 'ArrowRight') {
+    nextImage()
+  } else if (event.key === 'Escape') {
+    closeGallery()
+  }
+}
+
+// Добавление и удаление обработчика клавиш
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyDown)
+})
 </script>
+
+<style scoped>
+/* Дополнительные стили для галереи */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

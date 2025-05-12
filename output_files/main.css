@@ -1,75 +1,160 @@
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'ProximaRegular';
-  src: url('./fonts/ProximaNova-Regular.woff2');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'ProximaLight';
-  src: url('./fonts/ProximaNova-Light.woff2');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'ProximaBold';
-  src: url('./fonts/ProximaNova-Bold.woff2');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Oswald';
-  src: url('./fonts/Oswald-Regular.ttf');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  src: url('./fonts/Montserrat-Regular.ttf');
-  font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Oswald:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply text-black-color font-montserrat;
+    @apply font-sans text-dark bg-light overflow-x-hidden;
   }
 
   h1,
   h2,
   h3,
   h4,
-  h5 {
-    @apply m-0 font-normal;
+  h5,
+  h6 {
+    @apply font-heading tracking-wide;
   }
 
-  ul {
-    @apply list-none pl-0 m-0;
+  h1 {
+    @apply text-3xl md:text-4xl lg:text-5xl font-medium;
   }
 
-  li {
-    @apply m-0;
+  h2 {
+    @apply text-2xl md:text-3xl lg:text-4xl font-medium;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl lg:text-3xl;
+  }
+
+  p {
+    @apply text-base md:text-lg leading-relaxed;
   }
 
   a {
-    @apply no-underline text-black-color;
+    @apply transition-all duration-300 text-primary hover:text-accent;
   }
 
-  button {
-    @apply m-0 p-0 border-2 border-secondary-color rounded-md cursor-pointer;
+  section {
+    @apply py-12 md:py-16 lg:py-20;
   }
 }
 
-/* Кастомные стили для Swiper */
-.swiper-button-prev,
-.swiper-button-next {
-  color: #a1bfba !important;
+@layer components {
+  .btn {
+    @apply inline-block px-6 py-3 rounded-md font-medium transition-all duration-300 shadow-button;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-light hover:bg-accent;
+  }
+
+  .btn-outline {
+    @apply border-2 border-primary text-primary hover:bg-primary hover:text-light;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-dark hover:bg-accent hover:text-light;
+  }
+
+  .section-title {
+    @apply text-center mb-12 relative;
+  }
+
+  .section-title::after {
+    content: '';
+    @apply block w-16 h-1 bg-primary mx-auto mt-4;
+  }
+
+  .card {
+    @apply bg-white rounded-lg overflow-hidden shadow-card transition-all duration-300 hover:shadow-hover;
+  }
+
+  .service-item {
+    @apply flex justify-between py-3 border-b border-secondary last:border-b-0;
+  }
+
+  .nav-link {
+    @apply relative text-dark py-2 transition-all duration-300 overflow-hidden;
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300;
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    @apply w-full;
+  }
 }
 
+/* For Swiper customization */
 .swiper-pagination-bullet {
-  background-color: #a1bfba !important;
+  @apply bg-primary opacity-60 !important;
 }
 
 .swiper-pagination-bullet-active {
-  background-color: #a1bfba !important;
+  @apply bg-primary opacity-100 !important;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  @apply text-primary !important;
+}
+
+.swiper-slide {
+  height: auto !important;
+}
+
+/* Hamburger button animation */
+.hamburger-line {
+  @apply block w-6 h-0.5 bg-dark rounded-full transition-all duration-300;
+}
+
+.hamburger.active .hamburger-line:nth-child(1) {
+  @apply transform rotate-45 translate-y-1.5;
+}
+
+.hamburger.active .hamburger-line:nth-child(2) {
+  @apply opacity-0;
+}
+
+.hamburger.active .hamburger-line:nth-child(3) {
+  @apply transform -rotate-45 -translate-y-1.5;
+}
+
+/* Custom animations */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Scroll reveal stagger effect */
+[data-aos='stagger'] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.5s ease-out,
+    transform 0.5s ease-out;
+}
+
+[data-aos='stagger'].aos-animate {
+  opacity: 1;
+  transform: translateY(0);
 }
