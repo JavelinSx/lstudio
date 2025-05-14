@@ -106,7 +106,8 @@
         <!-- Правая колонка с картой -->
         <div data-aos="fade-left" data-aos-delay="300" class="h-full">
           <div class="rounded-lg overflow-hidden shadow-card h-full">
-            <iframe :src="mapSrc" width="100%" height="450" frameBorder="0" class="block" loading="lazy"></iframe>
+            <iframe :src="mapSrc" :style="{ height: mapHeight + 'px' }" width="100%" frameBorder="0" class="block"
+              loading="lazy"></iframe>
           </div>
         </div>
       </div>
@@ -115,12 +116,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 
 // Адаптивная карта
 const isDesktop = ref(window.innerWidth >= 769)
 const mapSrc = ref('')
-
+// Вычисляем высоту карты в зависимости от устройства
+const mapHeight = computed(() => {
+  return isDesktop.value ? 600 : 350
+})
 // Обновляем источник карты в зависимости от размера экрана
 const updateMapSrc = () => {
   isDesktop.value = window.innerWidth >= 769

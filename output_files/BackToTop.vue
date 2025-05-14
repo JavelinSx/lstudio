@@ -1,8 +1,8 @@
 <template>
-  <div v-show="showButton" class="fixed bottom-8 right-8 z-50 opacity-0 transition-all duration-300"
+  <div v-show="showButton" class="fixed bottom-24 right-7 z-40 opacity-0 transition-all duration-300"
     :class="{ 'opacity-100': showButton }" @click="scrollToTop">
     <button
-      class="w-12 h-12 bg-primary text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:bg-accent hover:transform hover:scale-110"
+      class="w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:bg-accent hover:transform hover:scale-110"
       aria-label="Прокрутить наверх">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chevron-up"
         viewBox="0 0 16 16">

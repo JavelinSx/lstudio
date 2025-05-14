@@ -53,7 +53,7 @@
   }
 
   .btn-primary {
-    @apply bg-primary text-light hover:bg-accent;
+    @apply bg-primary text-light hover:bg-light;
   }
 
   .btn-outline {

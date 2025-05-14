@@ -1,7 +1,7 @@
 <template>
   <header :class="[
     'fixed top-0 left-0 w-full z-50 transition-all duration-300',
-    scrolled ? 'bg-white shadow-lg py-2' : 'bg-transparent py-4'
+    scrolled ? 'bg-primary shadow-lg py-2' : 'bg-transparent py-4'
   ]">
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center">
@@ -11,10 +11,7 @@
             'h-10 mr-3 transition-all duration-300',
             scrolled ? 'opacity-100' : 'opacity-90'
           ]" :src="cutHairIcon" alt="Л-Студия">
-          <h1 :class="[
-            'text-xl font-heading font-medium transition-all duration-300',
-            scrolled ? 'text-dark' : 'text-light'
-          ]">
+          <h1 class="text-xl font-heading font-medium transition-all duration-300 text-light">
             Л-Студия
           </h1>
         </div>
@@ -51,11 +48,11 @@
 
         <!-- Гамбургер для мобильных -->
         <button :class="[
-          'hamburger md:hidden flex flex-col justify-center items-center w-10 h-10 focus:outline-none',
+          'hamburger md:hidden flex flex-col justify-center items-center w-10 h-10 focus:outline-none z-[51]',
           isMenuOpen ? 'active' : ''
         ]" @click="toggleMenu" aria-label="Открыть меню">
-          <span class="hamburger-line mb-1.5"></span>
-          <span class="hamburger-line mb-1.5"></span>
+          <span class="hamburger-line mb-1.5 "></span>
+          <span class="hamburger-line mb-1.5 "></span>
           <span class="hamburger-line"></span>
         </button>
       </div>
@@ -63,9 +60,9 @@
 
     <!-- Мобильное меню -->
     <div :class="[
-      'fixed inset-0 bg-dark bg-opacity-90 z-40 transition-all duration-300 md:hidden',
+      'fixed top-0 inset-0 bg-dark bg-opacity-100 z-50 transition-all duration-300 md:hidden h-max-[80vh]',
       isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-    ]" style="top: 60px;">
+    ]">
       <div class="container mx-auto px-4 py-8">
         <nav>
           <ul class="flex flex-col space-y-4">

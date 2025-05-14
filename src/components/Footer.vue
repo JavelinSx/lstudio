@@ -5,7 +5,7 @@
         <!-- Логотип и информация -->
         <div>
           <div class="flex items-center mb-6">
-            <img class="h-10 mr-3" :src="cutHairIcon" alt="Л-Студия">
+            <img class="h-10 mr-3" :src="cutHairIcon" alt="Логотип Л-Студия Плесецк">
             <h3 class="text-xl font-heading font-medium text-white">Л-Студия</h3>
           </div>
           <p class="text-gray-400 mb-6">

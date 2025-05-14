@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed bottom-24 right-6 z-50 md:hidden">
+  <div class="fixed bottom-40 right-7 z-40 md:hidden">
     <button @click="openBookingPopup" class="btn-floating" aria-label="Быстрая запись">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-calendar-plus"
         viewBox="0 0 16 16">

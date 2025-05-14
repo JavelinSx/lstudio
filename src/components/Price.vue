@@ -107,18 +107,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { priceList } from '@/utils/utils'
-
-// Парсим данные из старого прайс-листа и распределяем на две колонки
-const parsedPriceItems = computed(() => {
-  return priceList.map(item => {
-    const indexStr = item.lastIndexOf(' от ')
-    const service = item.substring(0, indexStr)
-    const price = item.substring(indexStr + 4)
-
-    return { service, price }
-  })
-})
 
 // Распределяем услуги по категориям
 const priceListLeft = computed(() => {
