@@ -7,7 +7,6 @@
       <Examples />
       <Services />
       <Price />
-      <Testimonials />
       <Contact />
     </main>
     <Footer />
@@ -30,7 +29,6 @@ import About from './components/About.vue'
 import Examples from './components/Examples.vue'
 import Services from './components/Services.vue'
 import Price from './components/Price.vue'
-import Testimonials from './components/Testimonials.vue'
 import Contact from './components/Contact.vue'
 import Footer from './components/Footer.vue'
 import BackToTop from './components/BackToTop.vue'

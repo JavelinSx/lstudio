@@ -1,5 +1,6 @@
 # lstudio
 
+aws s3 sync dist s3://lstudio.ru/ --endpoint-url https://storage.yandexcloud.net --delete
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
